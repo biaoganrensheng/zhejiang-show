@@ -1,0 +1,127 @@
+<div id="tz_4"  ></div>
+<script>
+    require.config({
+        paths: {
+            echarts: './mapT/dist'
+        }
+    });
+    require(
+        [
+            'echarts',
+            'echarts/dark',
+            'echarts/chart/map',
+            'echarts/chart/line',
+            'echarts/chart/bar',
+            'echarts/chart/pie',
+            'echarts/chart/funnel'
+        ],
+        function (ec,theme) {
+            var option={
+                title : {
+                    text: '滩长组织建设(2008年度)',
+                    x:'center',
+                    y:'10'
+                },
+                tooltip : {
+                    trigger: 'axis',
+                    axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+                        type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                    }
+                },
+                legend: {
+                    x:'center',
+                    y:'34',
+                    data:["市级","县级","镇级"]
+                },
+                toolbox: {
+                    show : false,
+                    orient:'vertical',
+                    x:'right',
+                    y:'center',
+                    feature : {
+                        mark : {show: false},
+                        dataView : {show: true, readOnly: true},
+                        magicType : {show: true, type: ['line', 'bar']},
+                        restore : {show: true},
+                        saveAsImage : {show: true}
+                    }
+                },
+                calculable : true,
+                grid:{
+                    x:'10%',
+                    y:'20%',
+                    x2:30,
+                    y2:30
+                },
+                xAxis : [
+                    {
+                        type : 'value',
+                        name:'人数',
+                        boundaryGap:[0,0.02]
+                    }
+                ],
+                yAxis : [
+                    {
+                        type : 'category',
+                        data : ["嘉兴","宁波","舟山","台州","温州"]
+                    }
+                ],
+                series : [
+                    {
+                        name:'市级',
+                        type:'bar',
+                        stack: '总量',
+                        itemStyle : { normal: {label : {show: true, position: 'insideRight'}}},
+                        data:[320, 302, 301, 334, 390]
+                    },
+                    {
+                        name:'县级',
+                        type:'bar',
+                        stack: '总量',
+                        itemStyle : { normal: {label : {show: true, position: 'insideRight'}}},
+                        data:  [320,78,654,321,112]
+                    },
+                    {
+                        name:'镇级',
+                        type:'bar',
+                        stack: '总量',
+                        itemStyle : { normal: {label : {show: true, position: 'insideRight'}}},
+                        data: [320, 302, 301, 334, 390]
+                    }
+                ]
+            };
+            var tanZhangChart4=ec.init(document.getElementById("tz_4"),theme);
+            tanZhangChart4.setOption(option);
+            window.onresize = tanZhangChart4.resize;
+// 模拟动态数据
+            var newData=function(item,min,max){
+                item=item||5,min=min||0,max=max||100;
+                var dataNEW=[];
+                for(var i=0;i<item;i++){
+                    dataNEW.push(Math.floor(Math.random()*(max-min+1)+min))
+                }
+                return dataNEW
+            };
+            var time=2008;
+            var timer_tanZhangChart4=setInterval(function(){
+                var changeData=option.series;
+                option.title.text="滩长组织建设("+(time<2017?++time:time=2008)+"年度)";
+                for(var i=0;i<changeData.length;i++){
+                    changeData[i].data=newData();
+                }
+                tanZhangChart4.setOption(option,true);
+            },1800);
+            $("#tz_4").hover(function () {
+                clearInterval(timer_tanZhangChart4);
+            },function(){
+                timer_tanZhangChart4=setInterval(function(){
+                    var changeData=option.series;
+                    option.title.text="滩长组织建设("+(time<2017?++time:time=2008)+"年度)";
+                    for(var i=0;i<changeData.length;i++){
+                        changeData[i].data=newData();
+                    }
+                    tanZhangChart4.setOption(option,true);
+                },1800);
+            })
+        })
+</script>

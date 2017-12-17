@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>信息决策图</title>
+    <meta name="keywords" content="艋顺,艋顺科技，艋顺科技公司">
+    <meta name="description" content="艋顺,艋顺科技，艋顺科技公司">
+    <link rel="shortcut icon" href="logo.ico" type="images/x-icon"/>
+    <link rel="icon" href="logo.ico" type="images/x-icon"/>
+    <link rel="stylesheet" href="plugins/bootstrap-datetimepicker.min3.css">
+    <link rel="stylesheet" href="plugins/jquery.mCustomScrollbar.css">
+    <link href="plugins/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <!--<link href="../css/font-awesome.css?v=4.4.0" rel="stylesheet">-->
+    <link href="plugins/animate.css" rel="stylesheet">
+    <style>
+        .page-box {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            right: 0;
+        }
+
+        .page-title {
+            position: fixed;
+            top: 0;
+            left: 0;
+            background: #000;
+            width: 100%;
+            font-size: 30px;
+            color: #fff;
+        }
+
+        .main {
+            position: fixed;
+            top: 60px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+
+        .page-container, .page-container > div {
+            height: 100%;
+        }
+
+        .layH {
+            height: 100%;
+        }
+
+        .leftItem, .rightItem {
+            box-sizing: border-box;
+        }
+
+        .list-group > a {
+            margin: 20px 0;
+        }
+
+        .leftItem, .rightItem {
+            border-top: 1px solid #c2c2c2;
+        }
+
+
+
+        .silderBar {
+            background-color: #000;
+        }
+
+        .silderBar-panel {
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+        .chartPulic>div{
+            width:100%;
+            height:100%;
+        }
+        .changeContainerLeft>div,.changeContainerRight>div{
+            display:none;
+        }
+        .changeContainerLeft>div.active,.changeContainerRight>div.active{
+            display:block;
+        }
+        /* settings */
+        .setting-icon{
+            outline:none;
+        }
+        .setting-icon:hover {
+            background: #3498DB;
+            width: 130px;
+            line-height: 60px;
+            color: #fff;
+            outline:none;
+        }
+
+        .setting-icon:hover i {
+            transform: translateX(50px) scale(3);
+        }
+
+        .setting-icon i {
+            transition: all .2s ease-in-out;
+            -webkit-transition: all .6s ease-in-out;
+            -moz-transition: all .6s ease-in-out;
+            transition: all .6s ease-in-out;
+        }
+
+        .setting-icon {
+            position: absolute;
+            left: 0;
+            color: #fff;
+            background: #23b7e5;
+            padding: 7px 8px;
+            top: 20px;
+            z-index: 1000;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.22);
+            font-family: open-sans-regular;
+            border-radius: 0px 5px 5px 0px !important;
+            line-height: 20px;
+            width: 34px;
+            white-space: nowrap;
+            -webkit-transition: width 300ms;
+            -moz-transition: width 300ms;
+            transition: width 300ms;
+            -webkit-transition: height 300ms;
+            -moz-transition: height 300ms;
+            transition: height 300ms;
+        }
+
+        .date-picker {
+            outline: none;
+        }
+
+        .datetimepicker.datetimepicker-dropdown-center.dropdown-menu:before, [class*=" datetimepicker-dropdown"]:after {
+            display: none !important;
+        }
+
+        .arrowPositionParent {
+            position: relative;
+            padding-right: 15px;
+        }
+
+        .arrowPositionChild {
+            position: absolute;
+            top: 48%;
+            right: 15%;
+        }
+
+        .silderBar-panel .list-group-item:first-child,.silderBar-panel .list-group-item:last-child {
+            border-radius: 0;
+        }
+
+        .mCS-dark-thin > .mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar {
+            background: rgba(236, 8, 8, 0.75);
+        }
+
+        .changeContainerLeft>div>div:first-child>.chartPulic, .changeContainerRight>div>div:first-child>.chartPulic{
+            border-top: none;
+        }
+        .mytpl .list-group-item,#searchBtn{
+            outline: none;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container-fluid page-box">
+    <div class="page-title text-center" id="mydiv" style="height:60px;line-height: 60px;">
+        浙江省"滩长制"信息决策图
+    </div>
+    <div class="main">
+        <div class="row page-container">
+            <div class="col-md-3 changeContainerLeft" id="changeContainerLeft">
+              <div data-sort="tanZhangChart">
+                    <div class="row" >
+                        <div class="chartPulic leftItem" data-url="tanZhangChart1.html"></div>
+                    </div>
+                    <div class="row">
+                        <div class="chartPulic leftItem specialItem1" data-url="tanZhangChart2.html"></div>
+                    </div>
+                    <div class="row">
+                        <div  class="chartPulic leftItem" data-url="tanZhangChart3.html"></div>
+                    </div>
+                </div>
+               <div data-sort="waterProductChart">
+                    <div class="row" >
+                        <div class="chartPulic leftItem" data-url="waterProductChart1.html"></div>
+                    </div>
+                    <div class="row">
+                        <div class="chartPulic leftItem " data-url="waterProductChart2.html"></div>
+                    </div>
+                </div>
+               <div data-sort="postJobChart">
+                     <div class="row" >
+                        <div class="chartPulic leftItem" data-url="postJobChart1.html"></div>
+                    </div>
+                    <div class="row">
+                        <div class="chartPulic leftItem specialItem1" data-url="postJobChart2.html"></div>
+                    </div>
+                    <div class="row">
+                        <div  class="chartPulic leftItem" data-url="postJobChart3.html"></div>
+                    </div>
+                </div>
+               <div data-sort="villagesChart">
+                     <div class="row" >
+                        <div class="chartPulic leftItem" data-url="villagesChart1.html"></div>
+                    </div>
+                    <div class="row">
+                        <div class="chartPulic leftItem specialItem1" data-url="villagesChart2.html"></div>
+                    </div>
+                    <div class="row">
+                        <div  class="chartPulic leftItem" data-url="villagesChart3.html"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 areaChange">
+                <div class="row layH">
+                    <div class="col-md-4 layH silderBar">
+                        <div class="panel panel-info">
+                            <div class="panel-heading" id="panelHeight" style="background-color: #000;">
+                                <div class="row" id="changeArea">
+                                    <form class="form-inline">
+                                        <div id="distpicker">
+                                            <div class="form-group" style="display: none">
+                                                <label class="sr-only" for="province1">Province</label>
+                                                <select class="form-control" id="province1"></select>
+                                            </div>
+                                            <div class="form-group" style="box-sizing: border-box;width:48%;">
+                                                <label class="sr-only" for="city2">City</label>
+                                                <select class="form-control" id="city2" style="width:90%;margin-left: 10%;"></select>
+                                            </div>
+                                            <div class="form-group" style="box-sizing: border-box;width:48%;">
+                                                <label class="sr-only" for="district3">District</label>
+                                                <select class="form-control" id="district3" style="width:90%;margin-left:5%;"></select>
+                                            </div>
+
+                                            <div class="form-group has-default has-feedback" style="margin-top: 10px;">
+                                                <div class="row" style="margin:1% 0;">
+                                                    <div class="col-md-4" style="padding-right: 0;">
+                                                        <label class="control-label"
+                                                               style="margin-top:14%;">开始日期</label>
+                                                    </div>
+                                                    <div class="col-md-8 arrowPositionParent" style="padding-left: 0;">
+                                                        <input name="startTime" type="text"
+                                                               class="form-control date-picker" id="startTime"
+                                                               style="width:100%;padding-right:0;"
+                                                               placeholder="2017-11-15">
+                                                        <span class="caret arrowPositionChild"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="row" style="margin:1% 0;">
+                                                    <div class="col-md-4" style="padding-right: 0;">
+                                                        <label class="control-label"
+                                                               style="margin-top:20%;">结束日期</label>
+                                                    </div>
+                                                    <div class="col-md-8 arrowPositionParent" style="padding-left: 0;margin-top: 10px;">
+                                                        <input name="endTime" type="text" id="endTime"
+                                                               class="form-control date-picker" id="endTime"
+                                                               style="width:100%;padding-right:0;"
+                                                               placeholder="2017-11-15">
+                                                        <span class="caret arrowPositionChild"></span>
+                                                    </div>
+                                                    <button type="button" class="btn btn-success btn-md btn-block"
+                                                            id="searchBtn"
+                                                            style="width:90%;height:40px;margin:0 auto;margin-top:22%;">
+                                                        <i class="glyphicon glyphicon-search"
+                                                           style="margin-right:6px;"></i>查 询
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <!--模板-->
+                            <div class="panel-body silderBar-panel" id="silderBar-panel"
+                                 style="background-color: #000;">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-8 layH silderBarContent" style="padding:0;overflow: hidden;">
+                        <div class="layH" id="Datacontainer" style="width:100%;position: relative;">
+                            <iframe id='changeTab' src="" frameborder="0" width="100%" height="100%" src=""
+                                    frameborder="0"></iframe>
+                            <span  class="setting-icon">
+                                <i class="glyphicon glyphicon-resize-full changeIcon"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 changeContainerRight" id="changeContainerRight">
+               <div  data-sort="tanZhangChart">
+                    <div class="row">
+                        <div class="chartPulic rightItem" data-url="tanZhangChart4.html"></div>
+                    </div>
+                    <div class="row">
+                        <div  class="chartPulic rightItem specialItem2" data-url="tanZhangChart5.html"></div>
+                    </div>
+                    <div class="row">
+                        <div class="chartPulic rightItem" data-url="tanZhangChart6.html"></div>
+                    </div>
+                </div>
+               <div  data-sort="waterProductChart">
+                    <div class="row" >
+                        <div class="chartPulic leftItem" data-url="waterProductChart3.html"></div>
+                    </div>
+                    <div class="row">
+                        <div class="chartPulic leftItem" data-url="waterProductChart4.html"></div>
+                    </div>
+                </div>
+               <div  data-sort="postJobChart">
+                    <div class="row" >
+                        <div class="chartPulic leftItem" data-url="postJobChart4.html"></div>
+                    </div>
+                    <div class="row">
+                        <div class="chartPulic leftItem specialItem1" data-url="postJobChart5.html"></div>
+                    </div>
+                    <div class="row">
+                        <div  class="chartPulic leftItem" data-url="postJobChart6.html"></div>
+                    </div>
+                </div>
+               <div  data-sort="villagesChart">
+                    <div class="row" >
+                        <div class="chartPulic leftItem" data-url="villagesChart4.html"></div>
+                    </div>
+                    <div class="row">
+                        <div class="chartPulic leftItem specialItem1" data-url="villagesChart5.html"></div>
+                    </div>
+                    <div class="row">
+                        <div  class="chartPulic leftItem" data-url="villagesChart6.html"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 全局js -->
+<script src="plugins/jquery.min.js?v=2.1.4"></script>
+<script src="plugins/bootstrap.min.js?v=3.3.6"></script>
+<script src="mapT/dist/canvas-particle.js"></script>
+<script src="plugins/bootstrap-datetimepicker.min.gai.js"></script>
+<script src="plugins/jquery.mCustomScrollbar.concat.min.js"></script>
+<script src="plugins/distpicker.data.js"></script>
+<script src="plugins/distpicker.js"></script>
+<script src="plugins/public_alert.js"></script>
+<script src="plugins/baiduTemplate.js"></script>
+<!-- ECharts单文件引入 -->
+<script src="mapT/dist/echarts.js"></script>
+<script id="silderBarControl" type="text/html">
+    <%if(res==1){%>
+    <div class="list-group mytpl">
+        <%for(var i=0;i<list.length
+        ;i++){%>
+        <a href="javascript:;" class="list-group-item" data-name="<%=list[i].name%>">
+            <%=list[i].content%>
+            <%if(list[i].badge){%>
+            <span class="badge">
+                  <%=list[i].badge%>
+            </span>
+            <%}%>
+            <input type="hidden" value="<%=list[i].url%>" data-params="<%:=list[i].params%>">
+        </a>
+        <%}%>
+    </div>
+    <%}%>
+</script>
+
+
+<script>
+    var tz_flag=true,wp_flag=true,pj_flag=true,vl_flag=true;
+
+    function addControlBar() {
+        var _baseH = $(".page-container").height();
+        var _panelH = (_baseH - ($("#panelHeight").outerHeight())) * .9;
+        $("#silderBar-panel").css({
+            'height': _panelH
+        });
+        var userName = "张三",
+            url = "test/silderBar.json";
+        TL_ajax(url, {userName: userName}, 'GET')
+            .done(function (data) {
+                /*模板渲染*/
+               BaiDuTpl("silderBarControl", "silderBar-panel", data);
+                /*初始化滚动条插件*/
+                $("#silderBar-panel").mCustomScrollbar({
+                    scrollButtons: {
+                        enable: true
+                    },
+                    theme: "dark-thin"
+                });
+                /*初始化加载的地图*/
+                var initUrl = data.list[0].url;
+                $("#changeTab").attr('src', initUrl);
+            })
+
+    }
+
+    function resetHeight(dom,pardom,part, per, sliceleft, sliceright) {
+
+        var _baseH = $(".page-container").height();
+        sliceleft = sliceleft || 3;
+        sliceright = sliceright || 3;
+        if (part == "left") {
+            var _domPer = per || 0.4, _elsePer = ((1 - per) / (sliceleft - 1)) || 0.3;
+            var _domH = _baseH * _domPer, _elseHeight = _baseH * _elsePer;
+            $(pardom+" .leftItem").height(_elseHeight);
+            $(dom).height(_domH);
+        } else if (part == "right") {
+            var _domPer = per || 0.4, _elsePer = ((1 - per) / (sliceright - 1)) || 0.3;
+            var _domH = _baseH * _domPer, _elseHeight = _baseH * _elsePer;
+            $(pardom+" .rightItem").height(_elseHeight);
+            $(dom).height(_domH);
+        } else {
+            var _heightL = (_baseH) / sliceleft + 'px';
+            var _heightR = (_baseH) / sliceright + 'px';
+            $(pardom+" .leftItem").height(_heightL);
+            $(pardom+" .rightItem").height(_heightR);
+        }
+
+    }
+
+    function BaiDuTpl(tplId, domId, data) {
+        var bt = baidu.template;
+        var html = bt(tplId, data);
+        document.getElementById(domId).innerHTML = html;
+    }
+    function loadChart(_class){
+        switch (_class){
+            case "tanZhangChart":
+                resetHeight(".specialItem1",'.active','left', 0.334);
+                resetHeight(".specialItem2",'.active', 'right', '0.4');
+                if(tz_flag&&(!$(".setting-icon").hasClass("flag"))){
+                    $(".active .chartPulic").each(function (i, v) {
+                        var _dataUrl=$(v).data('url');
+                        var _url = "./tpl/"+_dataUrl;
+                        $(v).load(_url);
+                    });
+                    tz_flag=false;
+                }
+                break;
+            case "waterProductChart":
+                resetHeight(".specialItem1",'.active', 'left', 0.5,2);
+                resetHeight(".specialItem2", '.active','right', '0.5',2);
+                if(wp_flag&&(!$(".setting-icon").hasClass("flag"))){
+                    $(".active .chartPulic").each(function (i, v) {
+                        var _dataUrl=$(v).data('url');
+                        var _url = "./tpl/"+_dataUrl;
+                        $(v).load(_url);
+                    });
+                    wp_flag=false;
+                }
+                break;
+            case "postJobChart":
+                resetHeight(".specialItem1",'.active','left', 0.33);
+                resetHeight(".specialItem2",'.active', 'right', '0.33');
+                if(pj_flag&&(!$(".setting-icon").hasClass("flag"))){
+                    $(".active .chartPulic").each(function (i, v) {
+                        var _dataUrl=$(v).data('url');
+                        var _url = "./tpl/"+_dataUrl;
+                        $(v).load(_url);
+                    });
+                    pj_flag=false;
+                }
+                break;
+            case "villagesChart":
+                resetHeight(".specialItem1",'.active','left', 0.33);
+                resetHeight(".specialItem2",'.active', 'right', '0.33');
+                if(vl_flag&&(!$(".setting-icon").hasClass("flag"))){
+                    $(".active .chartPulic").each(function (i, v) {
+                        var _dataUrl=$(v).data('url');
+                        var _url = "./tpl/"+_dataUrl;
+                        $(v).load(_url);
+                    });
+                    vl_flag=false;
+                }
+                break;
+        }
+
+    }
+    /**
+     *
+     * 工具类*/
+    /**
+     * 1.TL_ajax:简单的封装ajax
+     * @param  {[string]} reqUrl   [请求的url]
+     * @param  {[obj]} reqData   [传递的参数]
+     * @param  {[GET||POST||DELETE||...]} reqType   [提交类型]
+     * @param  {[obj]}  myChart [实例化后的图表组件 ]
+     * @param  {[string]} resType   [返回数据的格式]
+     * @param  {[string]} contentType   [请求文件的传输的格式]
+     * @param  {[num]} reqTime [设置超时时间]
+     *
+     */
+    var TL_ajax = function (reqUrl, reqData, reqType, myChart, resType, contentType, reqTime) {
+        var AJAX = $.ajax({
+            url: reqUrl,
+            type: reqType || "GET",
+            dataType: resType || "json",
+            data: reqData || {},
+            crossDomain: true,
+            contentType: contentType || "application/x-www-form-urlencoded",
+            timeout: reqTime || 3000,
+            beforeSend: function (XHR) {
+                myChart && showOrHideLoading("start", reqData, myChart);
+            },
+            complete: function (XHR, TS) {
+                myChart && showOrHideLoading("end", reqData, myChart);
+            }
+        });
+        return AJAX;
+    };
+    /**
+     * 2.TL_getUrlparamsArray:获得地址参数的数组
+     * */
+    var TL_getUrlparamsArray = function (url) {
+        var search = url || window.location.search;
+        var tmparray = search.substr(1, search.length).split("&");
+        var paramsArray = new Array;
+        if (tmparray != null) {
+            for (var i = 0; i < tmparray.length; i++) {
+                var reg = /[=|^==]/;    // 用=进行拆分，但不包括==
+                var set1 = tmparray[i].replace(reg, '&');
+                var tmpStr2 = set1.split('&');
+                var array = new Array;
+                array[tmpStr2[0]] = tmpStr2[1];
+                paramsArray.push(array);
+            }
+        }
+        return paramsArray;
+    };
+    /**
+     * 3.TL_getParamValue:获得地址参数对应的值
+     * */
+    var TL_getParamValue = function (name, url) {
+        var paramsArray = TL_getUrlparamsArray(url);
+        if (paramsArray != null) {
+            for (var i = 0; i < paramsArray.length; i++) {
+                for (var j in paramsArray[i]) {
+                    if (j == name) {
+                        return paramsArray[i][j];
+                    }
+                }
+            }
+        }
+        return null;
+    };
+    /**
+     *
+     * 事件函数*/
+    /**
+     * 1. 放大图标的点击事件
+     */
+    var bindScaleIconEvent = function () {
+        if ($(this).hasClass("flag")) {
+            $(".page-container>div").not(".areaChange").map(function (i, v) {
+                $(v).addClass("show").removeClass("hide");
+            });
+            $(".silderBar").removeClass("col-md-2").addClass('col-md-4');
+            $(".silderBarContent").removeClass("col-md-10").addClass('col-md-8');
+            $(".areaChange").removeClass("col-md-12").addClass("col-md-6");
+            $(".changeIcon").removeClass("glyphicon-resize-small").addClass('glyphicon-resize-full');
+            $(this).removeClass("flag");
+            $(".mytpl a").each(function(i,v){
+                if($(v).hasClass("active")){
+                    $(v).trigger("click");
+                }
+            })
+        } else {
+            $(this).addClass("flag");
+            $(".page-container>div").not(".areaChange").map(function (i, v) {
+                $(v).addClass("hide").removeClass("show");
+            });
+            $(".silderBar").removeClass("col-md-4").addClass('col-md-2');
+            $(".silderBarContent").removeClass("col-md-8").addClass('col-md-10');
+            $(".areaChange").removeClass("col-md-6").addClass("col-md-12");
+            $(".changeIcon").removeClass("glyphicon-resize-full").addClass('glyphicon-resize-small');
+            $(".mytpl a").each(function(i,v){
+                var targetUrl=$(v).find("input").val();
+                if($(v).hasClass("active")){
+                    $("#changeTab").attr("src", targetUrl);
+                }
+            })
+        }
+    };
+    /**
+     * 2. 点击controlbar 的切换事件（注意可以是iframe）;
+     */
+    var bindItemChangeEvent = function () {
+        $(this).addClass('active').siblings("a").removeClass('active');
+        var _targetDOM = $(this).find("[type='hidden']");
+        var _url = _targetDOM.val();
+        var _data = _targetDOM.data("params");
+        iframeObj = {
+            name: TL_getParamValue("name", _data),
+            age: TL_getParamValue("age", _data)
+        };
+        $("#changeTab").attr("src", _url);
+       var targetSort=$(this).data("name");
+       $(".changeContainerLeft>div").removeClass("active");
+       $(".changeContainerRight>div").removeClass("active");
+       $(".changeContainerLeft div[data-sort='"+targetSort+"']").addClass("active");
+       $(".changeContainerRight div[data-sort='"+targetSort+"']").addClass("active");
+        loadChart(targetSort);
+    };
+    /**
+     * 3.查询更新图表
+     * */
+    var renderEvent = function(renderType,obj){
+        var renderChartArr=(function(param){
+            var renderChartObj={};
+            for(var key in param){
+                var _val=param[key];
+                var chartNum= $("[data-sort='"+key+"'] .chartPulic").size();
+                if(_val=="all"){
+                    var rederChart=[];
+                    $("[data-sort='"+key+"'] .chartPulic").each(function (i, v) {
+                        var _dataUrl=$(v).data('url');
+                        rederChart.push(_dataUrl);
+                        renderChartObj[key]=rederChart;
+                    });
+                }else if(typeof _val=="object"&&_val.length<chartNum){
+                    var rederChart=[]
+                    _val.forEach(function(v){
+                        var _dataUrl=$("[data-sort='"+key+"'] .chartPulic").eq(v).data('url');
+                        rederChart.push(_dataUrl);
+                    });
+                    renderChartObj[key]=rederChart;
+                }
+            }
+            return renderChartObj;
+        })(renderType) ;
+        console.log(renderChartArr);
+        for(var key in renderChartArr){
+            var targetRenderChart=renderChartArr[key];
+            targetRenderChart.forEach(function(v,i){
+                var url="./tpl/"+v;
+                //携带参数,重新load
+                $("[data-sort='"+key+"'] div[data-url='"+v+"']").load(url,obj);
+            })
+        }
+    };
+    var bindSearchEvent = function () {
+        var city = $("#city2").val(),
+            district = $("#district3").val(),
+            startTime = $("#startTime").val(),
+            endTime = $("#endTime").val(),
+            sortArr =[],
+            renderChartName={};
+        if (1) {
+            var obj = {
+                city: city,
+                district: district,
+                startTime: startTime,
+                endTime: endTime
+            };
+ // 调用ajax 和后台交互
+          $(".changeContainerLeft>div").each(function(i,v){
+              var _v=$(v).data("sort");
+              if(sortArr.indexOf(_v)==-1){
+                  sortArr.push(_v);
+              }
+          });
+            renderChartName[sortArr[0]]="all";
+            renderChartName[sortArr[1]]=[0,1,3];
+            renderChartName[sortArr[2]]=[2,3,4];
+            renderChartName[sortArr[3]]=[0,3,5];
+            renderEvent(renderChartName,obj);
+        } else {
+            ms.msg("请输入完整的查询条件", 2, 2000);
+        }
+    };
+
+    $(function () {
+        /**
+         * 绑定具体的函数操作
+         * 1.初始化粒子动画
+         * 2.初始化datepicker
+         * 3.初始化整体高度布局的设置
+         * 4.初始化操作面板
+         * 5.获取全局的options对象
+         */
+        var configHeader = {
+            vx: 4,	//小球x轴速度,正为右，负为左
+            vy: 4,	//小球y轴速度
+            height: 2,	//小球高宽，其实为正方形，所以不宜太大
+            width: 2,
+            count: 100,		//点个数
+            color: "255, 255, 255", 	//点颜色
+            stroke: "255,255,255", 		//线条颜色
+            dist: 6000, 	//点吸附距离
+            e_dist: 20000, 	//鼠标吸附加速距离
+            max_conn: 10 	//点到点最大连接数
+        };
+        CanvasParticle(configHeader);
+        $('#startTime').datetimepicker({
+            minView: "month",
+            autoclose: true,
+            todayBtn: true,
+            pickerPosition: "center",
+            todayHighlight: true,
+            startView: 2,
+            forceParse: 0,
+            showMeridian: 1,
+            bootcssVer: 2,
+            format: "yyyy-mm-dd",
+            language: 'zh',
+            endDate: new Date()
+        }).on('changeDate', function (e) {
+            var startTime = e.date;
+            $('#endTime').datetimepicker('setStartDate', startTime);
+        });
+        $('#endTime').datetimepicker({
+            minView: "month",
+            autoclose: true,
+            todayBtn: true,
+            pickerPosition: "center",
+            todayHighlight: true,
+            startView: 2,
+            forceParse: 0,
+            showMeridian: 1,
+            bootcssVer: 2,
+            format: "yyyy-mm-dd",
+            language: 'zh',
+            endDate: new Date()
+        }).on('changeDate', function (e) {
+            var endTime = e.date;
+            $('#startTime').datetimepicker('setEndDate', endTime);
+        });
+        $("#distpicker").distpicker({
+            province: "浙江省",
+            city: '--所在市--',
+            district: '--所在区--',
+            autoSelect: false,
+            placeholder: true
+        });
+        addControlBar();
+        $(".setting-icon").on("click", bindScaleIconEvent);
+        $(".silderBar-panel").on('click', "a.list-group-item", bindItemChangeEvent);
+
+
+//  调用load 函数加载配置项
+        $("#searchBtn").on('click', bindSearchEvent);
+// 鼠标移入item 加放大的动效
+        $(".silderBar-panel").on("mouseenter mouseleave",".list-group-item",function (e) {
+            $(this).toggleClass("animated pulse");
+        });
+        //模板渲染完成后，触发第一个item 项
+        var timer=setInterval(function(){
+            if($(".list-group-item").size()==4){
+                $(".mytpl>a").eq(0).trigger("click");
+                clearInterval(timer);
+            }
+        },20);
+        $(window).resize(function(){
+            var _baseH = $(".page-container").height();
+            var _panelH = (_baseH - ($("#panelHeight").outerHeight())) * .9;
+            $("#silderBar-panel").css({
+                'height': _panelH
+            });
+           $(".mytpl a").each(function(i,v){
+                if($(v).hasClass("active")){
+                   tz_flag=true,wp_flag=true,pj_flag=true,vl_flag=true;
+                    $(v).trigger("click");
+                }
+            })
+        })
+    });
+
+</script>
+</body>
+</html>

@@ -1,0 +1,188 @@
+<div id="tz_1" ></div>
+<script>
+    require.config({
+        paths: {
+            echarts: './mapT/dist'
+        }
+    });
+    require(
+        [
+            'echarts',
+            'echarts/dark',
+            'echarts/chart/map',
+            'echarts/chart/line',
+            'echarts/chart/bar',
+            'echarts/chart/pie',
+            'echarts/chart/funnel'
+        ],
+        function (ec,theme) {
+            var option={
+                title : {
+                    text: '滩涂巡查完成率(2008年度)',
+                    x:'center',
+                    y:'10'
+                },
+                tooltip : {
+                    trigger: 'axis',
+                    axisPointer:{
+                        type: 'shadow',
+                        lineStyle: {
+                            color: '#48b',
+                            width: 2,
+                            type: 'solid'
+                        },
+                        crossStyle: {
+                            color: '#1e90ff',
+                            width: 1,
+                            type: 'dashed'
+                        },
+                        shadowStyle: {
+                            color: 'rgba(150,150,150,0.3)',
+                            width: 'auto',
+                            type: 'default'
+                        }
+                    }
+                },
+                legend: {
+                    data:['完成率'],
+                    color:'red',
+                    x:'center',
+                    y:'34'
+                },
+                toolbox: {
+                    show : false,
+                    feature : {
+                        mark : {show: false},
+                        dataView : {show: true, readOnly: true},
+                        magicType : {show: true, type: ['line', 'bar']},
+                        restore : {show: true},
+                        saveAsImage : {show: true}
+                    }
+                },
+                calculable : true,
+                grid:{
+                    x:'17%',
+                    y:'24%',
+                    x2:36,
+                    y2:30
+                },
+                xAxis : [
+                    {
+                        type : 'category',
+                        data : ['嘉兴','宁波','舟山','台州','温州']
+                    }
+                ],
+                yAxis : [
+                    {
+                        type : 'value',
+                        name:"百分比",
+                        nameLocation:'end',
+                        nameTextStyle:{
+                            color:'#f00'
+                        },
+                        boundaryGap:[0,0.02]
+                    }
+                ],
+                series : [
+                    {
+                        name:'完成率',
+                        type:'bar',
+                        data:[25,60,70,89,33],
+                        itemStyle:{
+                            normal:{
+                                color:function(params){
+                                    if(params.series.data){
+                                        var colorList = ['#26C0C0','#B5C334'];
+                                        var dataArr=params.series.data;
+                                        var total=0,averageTotal=0;
+                                        for(var i=0;i<dataArr.length;i++){
+                                            total+=dataArr[i];
+                                        }
+                                        averageTotal=(total/dataArr.length).toFixed(2);
+                                        if(params.data>averageTotal||params.data==averageTotal){
+                                            return colorList[0];
+                                        }else{
+                                            return colorList[1];
+                                        }
+                                    }
+                                    return 'red';
+                                },
+                                label:{
+                                    show:false
+                                }
+                            },
+                            emphasis:{
+                                label:{
+                                    show:true
+                                }
+                            }
+                        },
+                        markPoint : {
+                            itemStyle:{
+                                normal:{
+                                    color:function(params){
+                                        var colorList = [ '#27727B','#E87C25'];
+                                        if(params.data.type=='max'){
+                                            return colorList[0];
+                                        }else{
+                                            return colorList[1];
+                                        }
+                                    }
+                                }
+                            },
+                            data : [
+                                {type : 'max', name: '最大值'},
+                                {type : 'min', name: '最小值'}
+                            ]
+                        },
+                        markLine : {
+                            precision:2,
+                            data : [
+                                {type : 'average', name: '平均值'}
+                            ],
+                            itemStyle:{
+                                normal:{
+                                    borderColor:'red',
+                                    lineStyle:{
+                                        color:'red'
+                                    },
+                                    label:{
+                                        textStyle:{
+                                            color:'red'
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                ]
+            };
+            var tanZhangChart1=ec.init(document.getElementById("tz_1"),theme);
+            tanZhangChart1.setOption(option);
+            window.onresize = tanZhangChart1.resize;
+//            模拟动态数据
+            var newData=function(item,min,max){
+                item=item||5,min=min||0,max=max||100;
+                var dataNEW=[];
+                for(var i=0;i<item;i++){
+                    dataNEW.push(Math.floor(Math.random()*(max-min+1)+min))
+                }
+                return dataNEW
+            };
+            var time=2008;
+            var timer_tanZhangChart1=setInterval(function(){
+                option.title.text="滩涂巡查完成率("+(time<2017?++time:time=2008)+"年度)";
+                option.series[0].data=newData();
+                tanZhangChart1.setOption(option,true);
+            },1500);
+            $("#tz_1").hover(function () {
+                clearInterval(timer_tanZhangChart1);
+            },function(){
+                timer_tanZhangChart1=setInterval(function(){
+                    option.title.text="滩涂巡查完成率("+(time<2017?++time:time=2008)+"年度)";
+                    option.series[0].data=newData();
+                    tanZhangChart1.setOption(option,true);
+                },1500);
+            })
+        })
+</script>

@@ -1,0 +1,140 @@
+<div id="tz_5"></div>
+<script>
+    require.config({
+        paths: {
+            echarts: './mapT/dist'
+        }
+    });
+    require(
+        [
+            'echarts',
+            'echarts/dark',
+            'echarts/chart/map',
+            'echarts/chart/line',
+            'echarts/chart/bar',
+            'echarts/chart/pie',
+            'echarts/chart/funnel'
+        ],
+        function (ec,theme) {
+            var option2=option={
+                title : {
+                    text: '滩涂治理完成率',
+                    x:'center',
+                    y:'6'
+                },
+                tooltip : {
+                    trigger: 'axis',
+                    axisPointer:{
+                        type: 'shadow',
+                        lineStyle: {
+                            color: '#48b',
+                            width: 2,
+                            type: 'solid'
+                        },
+                        crossStyle: {
+                            color: '#1e90ff',
+                            width: 1,
+                            type: 'dashed'
+                        },
+                        shadowStyle: {
+                            color: 'rgba(150,150,150,0.3)',
+                            width: 'auto',
+                            type: 'default'
+                        }
+                    }
+                },
+                legend: {
+                    origent:'vertical',
+                    x:'center',
+                    y:'34',
+                    itemGap:4,
+                    data:['非法占用海滩','非法修、造、拆船舶监管','违禁渔具','非法占用、破坏海岸线','"三无"渔船','入海排污口','农药清潭行'],
+                    selected: {
+                        '非法修、造、拆船舶监管' : false,
+                        '非法占用、破坏海岸线' : false,
+                        '入海排污口' : false,
+                        '农药清潭行' : false
+                    }
+                },
+                toolbox: {
+                    show : false,
+                    orient:'vertical',
+                    x:'right',
+                    y:'center',
+                    feature : {
+                        mark : {show: true},
+                        dataView : {show: true, readOnly: true},
+                        magicType : {show: true, type: ['line', 'bar']},
+                        restore : {show: true},
+                        saveAsImage : {show: true}
+                    }
+                },
+                calculable : true,
+                grid:{
+                    x:'14%',
+                    y:'28%',
+                    x2:60,
+                    y2:36
+                },
+                xAxis : [
+                    {
+                        type : 'category',
+                        boundaryGap : false,
+                        data : ['嘉兴','宁波','舟山','台州','温州']
+                    }
+                ],
+                yAxis : [
+                    {
+                        type : 'value',
+                        boundaryGap:[0,0.02]
+                    }
+                ],
+                series : [
+                    {
+                        name:'非法占用海滩',
+                        type:'bar',
+                        data: [250,340,600,830,320]
+                    },
+                    {
+                        name:'非法修、造、拆船舶监管',
+                        type:'bar',
+                        data:[230,450,230,450,630]
+
+                    },
+                    {
+                        name:'非法占用、破坏海岸线',
+                        type:'bar',
+                        data: [250,660,720,812,120]
+
+                    },
+                    {
+                        name:'违禁渔具',
+                        type:'bar',
+                        data:[250,220,560,670,890]
+
+                    },
+                    {
+                        name:"三无'渔船'",
+                        type:'bar',
+                        data:[230,340,560,770,330]
+
+                    },
+                    {
+                        name:'入海排污口',
+                        type:'bar',
+                        data:[250,623,340,240,330]
+
+                    },
+                    {
+                        name:'农药清潭行',
+                        type:'bar',
+                        data:[250,645,650,340,330]
+
+                    }
+                ]
+            };
+            var tanZhangChart5=ec.init(document.getElementById("tz_5"),theme);
+            tanZhangChart5.setOption(option2);
+            window.onresize = tanZhangChart5.resize;
+        })
+</script>

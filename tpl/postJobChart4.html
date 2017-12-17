@@ -1,0 +1,116 @@
+<div id="pj_4" ></div>
+<script>
+
+    require.config({
+        paths: {
+            echarts: './mapT/dist'
+        }
+    });
+    require(
+        [
+            'echarts',
+            'echarts/blue',
+            'echarts/chart/map',
+            'echarts/chart/line',
+            'echarts/chart/bar',
+            'echarts/chart/pie',
+            'echarts/chart/scatter',
+            'echarts/chart/radar',
+            'echarts/chart/funnel'
+        ],
+        function (ec,theme) {
+            var option={
+                title : {
+                    text: '作业类型招聘求职(2012年度)',
+                    x: 'center'
+                },
+                tooltip : {
+                    trigger: 'axis',
+                    axisPointer : {
+                        type : 'shadow'
+                    },
+                    formatter:'作业类型:{b}</br>{a}:{c}人</br>{a1}:{c1}人'
+                },
+                legend: {
+                    data:['招聘', '求职'],
+                    x:'left',
+                    y:'24'
+                },
+                grid:{
+                    x:'12%',
+                    y:'20%',
+                    x2:30,
+                    y2:30
+                },
+                toolbox: {
+                    show : false,
+                    feature : {
+                        mark : {show: false},
+                        dataView : {show: true, readOnly: true},
+                        magicType: {show: true, type: ['line', 'bar']},
+                        restore : {show: true},
+                        saveAsImage : {show: true}
+                    }
+                },
+                calculable : true,
+                xAxis : [
+                    {
+                        type : 'value',
+                        name:'人数',
+                        boundaryGap : [0, 0.01]
+                    }
+                ],
+                yAxis : [
+                    {
+                        type : 'category',
+                        data : ['刺网','围网','拖网','拖虾','张网','钓具','耙刺','陷阱','笼壶','杂渔具','其他']
+                    }
+                ],
+                series : [
+                    {
+                        name:'招聘',
+                        type:'bar',
+                        data:[183, 239, 234, 470, 744, 230,567,344,567,234,111]
+                    },
+                    {
+                        name:'求职',
+                        type:'bar',
+                        data:[195, 238, 300, 594, 411, 607,123,342,456,222,120]
+                    }
+                ]
+            };
+            var postJobChart4=ec.init(document.getElementById("pj_4"),theme);
+            postJobChart4.setOption(option);
+            window.onresize = postJobChart4.resize;
+            //            模拟动态数据
+            var newData=function(item,min,max){
+                item=item||5,min=min||0,max=max||100;
+                var dataNEW=[];
+                for(var i=0;i<item;i++){
+                    dataNEW.push(Math.floor(Math.random()*(max-min+1)+min))
+                }
+                return dataNEW
+            };
+            var time=2012;
+           var  timer_postJobChart4=setInterval(function(){
+                var changeData=option.series;
+                option.title.text="作业类型招聘求职("+(time<2017?++time:time=2012)+"年度)";
+                for(var i=0;i<changeData.length;i++){
+                    changeData[i].data=newData(11,100,1000);
+                }
+                postJobChart4.setOption(option,true);
+            },1600);
+            $("#pj_4").hover(function () {
+                clearInterval(timer_postJobChart4);
+            },function(){
+                  timer_postJobChart4=setInterval(function(){
+                    var changeData=option.series;
+                    option.title.text="作业类型招聘求职("+(time<2017?++time:time=2012)+"年度)";
+                    for(var i=0;i<changeData.length;i++){
+                        changeData[i].data=newData(11,100,1000);
+                    }
+                    postJobChart4.setOption(option,true);
+                },1600);
+            })
+        })
+</script>

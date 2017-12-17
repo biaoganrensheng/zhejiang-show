@@ -1,0 +1,33 @@
+{
+  "res":1,
+  "list":[
+    {
+      "content":"滩长专项",
+      "url":"mapT/tmap.html",
+      "badge":8,
+      "params":"?age=21&name=张三",
+       "name":"tanZhangChart"
+    },
+    {
+      "content":" 水产品专项",
+      "url":"mapT/yyqkShow.html",
+      "badge":7,
+      "params":"?age=56&name=李四",
+        "name":"waterProductChart"
+    },
+    {
+      "content":"招聘求职专项",
+        "badge":87,
+      "url":"mapT/jobShow.html",
+      "params":"?age=78&name=王五",
+        "name":"postJobChart"
+    },
+    {
+      "content":"村村通专项",
+      "badge":23,
+      "url":"mapT/zjycShow.html",
+      "params":"?age=90&name=张柳",
+      "name":"villagesChart"
+    }
+  ]
+}

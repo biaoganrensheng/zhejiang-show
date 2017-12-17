@@ -1,0 +1,332 @@
+<div id="tz_2" ></div>
+<script>
+    require.config({
+        paths: {
+            echarts: './mapT/dist'
+        }
+    });
+    require(
+        [
+            'echarts',
+            'echarts/dark',
+            'echarts/chart/map',
+            'echarts/chart/line',
+            'echarts/chart/bar',
+            'echarts/chart/pie',
+            'echarts/chart/funnel'
+        ],
+        function (ec,theme) {
+            var option={
+                legend: {
+                    x : 'center',
+                    y:'12%',
+                    data : ['嘉兴完成率','宁波完成率',"舟山完成率",'台州完成率','温州完成率']
+                },
+                title : {
+                    text: '各地区公示牌完成进度',
+                    x: 'center',
+                    y:'10'
+                },
+                tooltip : {
+                    trigger: 'item',
+                    formatter:function(params){
+                        if(params["1"]=="other"){
+                            return '完成率'+(100-params['2'])+'%';
+                        }else{
+                            return '完成率'+params['2']+'%';
+                        }
+                    }
+                },
+                toolbox: {
+                    show : false,
+                    feature : {
+                        dataView : {show: true, readOnly:true},
+                        magicType : {
+                            show: true,
+                            type: ['pie', 'funnel'],
+                            option: {
+                                funnel: {
+                                    width: '20%',
+                                    height: '30%',
+                                    itemStyle : {
+                                        normal : {
+                                            label : {
+                                                formatter : function (params){
+                                                    return 'other\n' + params.value + '%\n'
+                                                },
+                                                textStyle: {
+                                                    baseline : 'middle'
+                                                }
+                                            }
+                                        },
+                                    }
+                                }
+                            }
+                        },
+                        restore : {show: true},
+                        saveAsImage : {show: true}
+                    }
+                },
+                series : [
+                    {
+                        type : 'pie',
+                        center : ['20%', '46%'],
+                        radius : ['20%', '32%'],
+                        x: '0%', // for funnel
+                        y:'40%',
+                        itemStyle : {
+                            normal : {
+                                label : {
+                                    formatter : function (params){
+                                        return 100 - params.value + '%'
+                                    },
+                                    textStyle: {
+                                        baseline : 'top'
+                                    }
+                                }
+                            }
+                        },
+                        data : [
+                            {name:'other', value:46, itemStyle : {
+                                normal : {
+                                    color: '#ccc',
+                                    label : {
+                                        show : true,
+                                        position : 'center'
+                                    },
+                                    labelLine : {
+                                        show : false
+                                    }
+                                },
+                                emphasis: {
+                                    color: 'rgba(0,0,0,0)'
+                                }
+                            }},
+                            {name:'嘉兴完成率', value:54,itemStyle :{
+                                normal : {
+                                    label : {
+                                        show : true,
+                                        position : 'center',
+                                        formatter : '{b}',
+                                        textStyle: {
+                                            baseline : 'bottom'
+                                        }
+                                    },
+                                    labelLine : {
+                                        show : false
+                                    }
+                                }
+                            }}
+                        ]
+                    },
+                    {
+                        type : 'pie',
+                        center : ['50%', '46%'],
+                        radius : ['20%', '32%'],
+                        x:'20%', // for funnel
+                        y:'40%',
+                        itemStyle : {
+                            normal : {
+                                label : {
+                                    formatter : function (params){
+                                        return 100 - params.value + '%'
+                                    },
+                                    textStyle: {
+                                        baseline : 'top'
+                                    }
+                                }
+                            }
+                        },
+                        data : [
+                            {name:'other', value:56, itemStyle : {
+                                normal : {
+                                    color: '#ccc',
+                                    label : {
+                                        show : true,
+                                        position : 'center'
+                                    },
+                                    labelLine : {
+                                        show : false
+                                    }
+                                },
+                                emphasis: {
+                                    color: 'rgba(0,0,0,0)'
+                                }
+                            }},
+                            {name:'宁波完成率', value:44,itemStyle : {
+                                normal : {
+                                    label : {
+                                        show : true,
+                                        position : 'center',
+                                        formatter : '{b}',
+                                        textStyle: {
+                                            baseline : 'bottom'
+                                        }
+                                    },
+                                    labelLine : {
+                                        show : false
+                                    }
+                                }
+                            }}
+                        ]
+                    },
+                    {
+                        type : 'pie',
+                        center : ['80%', '46%'],
+                        radius :  ['20%', '32%'],
+                        x:'40%', // for funnel
+                        y:'40%',
+                        itemStyle : {
+                            normal : {
+                                label : {
+                                    formatter : function (params){
+                                        return 100 - params.value + '%'
+                                    },
+                                    textStyle: {
+                                        baseline : 'top'
+                                    }
+                                }
+                            }
+                        },
+                        data : [
+                            {name:'other', value:33, itemStyle : {
+                                normal : {
+                                    color: '#ccc',
+                                    label : {
+                                        show : true,
+                                        position : 'center'
+                                    },
+                                    labelLine : {
+                                        show : false
+                                    }
+                                },
+                                emphasis: {
+                                    color: 'rgba(0,0,0,0)'
+                                }
+                            }},
+                            {name:'舟山完成率', value:67,itemStyle : {
+                                normal : {
+                                    label : {
+                                        show : true,
+                                        position : 'center',
+                                        formatter : '{b}',
+                                        textStyle: {
+                                            baseline : 'bottom'
+                                        }
+                                    },
+                                    labelLine : {
+                                        show : false
+                                    }
+                                }
+                            }}
+                        ]
+                    },
+                    {
+                        type : 'pie',
+                        center : ['34%', '76%'],
+                        radius :  ['20%', '32%'],
+                        x:'60%', // for funnel
+                        y:'40%',
+                        itemStyle : {
+                            normal : {
+                                label : {
+                                    formatter : function (params){
+                                        return 100 - params.value + '%'
+                                    },
+                                    textStyle: {
+                                        baseline : 'top'
+                                    }
+                                }
+                            }
+                        },
+                        data : [
+                            {name:'other', value:70, itemStyle : {
+                                normal : {
+                                    color: '#ccc',
+                                    label : {
+                                        show : true,
+                                        position : 'center'
+                                    },
+                                    labelLine : {
+                                        show : false
+                                    }
+                                },
+                                emphasis: {
+                                    color: 'rgba(0,0,0,0)'
+                                }
+                            }},
+                            {name:'温州完成率', value:30,itemStyle : {
+                                normal : {
+                                    label : {
+                                        show : true,
+                                        position : 'center',
+                                        formatter : '{b}',
+                                        textStyle: {
+                                            baseline : 'bottom'
+                                        }
+                                    },
+                                    labelLine : {
+                                        show : false
+                                    }
+                                }
+                            }}
+                        ]
+                    },
+                    {
+                        type : 'pie',
+                        center : ['68%', '76%'],
+                        radius :  ['20%', '32%'],
+                        x:'80%', // for funnel
+                        y:'40%',
+                        itemStyle : {
+                            normal : {
+                                label : {
+                                    formatter : function (params){
+                                        return 100 - params.value + '%'
+                                    },
+                                    textStyle: {
+                                        baseline : 'top'
+                                    }
+                                }
+                            }
+                        },
+                        data : [
+                            {name:'other', value:40, itemStyle : {
+                                normal : {
+                                    color: '#ccc',
+                                    label : {
+                                        show : true,
+                                        position : 'center'
+                                    },
+                                    labelLine : {
+                                        show : false
+                                    }
+                                },
+                                emphasis: {
+                                    color: 'rgba(0,0,0,0)'
+                                }
+                            }},
+                            {name:'台州完成率', value:60,itemStyle : {
+                                normal : {
+                                    label : {
+                                        show : true,
+                                        position : 'center',
+                                        formatter : '{b}',
+                                        textStyle: {
+                                            baseline : 'bottom'
+                                        }
+                                    },
+                                    labelLine : {
+                                        show : false
+                                    }
+                                }
+                            }}
+                        ]
+                    }
+                ]
+            };
+            var tanZhangChart2=ec.init(document.getElementById("tz_2"),theme);
+            tanZhangChart2.setOption(option);
+            window.onresize = tanZhangChart2.resize;
+        })
+</script>

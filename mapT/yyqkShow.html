@@ -1,0 +1,93 @@
+<!doctype html>
+<html >
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>养殖病起情况</title>
+    <meta name="keywords" content="艋顺,艋顺科技，艋顺科技公司">
+    <meta name="description" content="艋顺,艋顺科技，艋顺科技公司">
+    <link rel="shortcut icon" href="../logo.ico" type="images/x-icon"/>
+    <link rel="icon" href="../logo.ico" type="images/x-icon"/>
+    <link href="../plugins/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="../plugins/animate.css" rel="stylesheet">
+    <style>
+        html,body{
+            height:100%;
+        }
+        #main {
+            width:100%;
+            height:100%;
+        }
+    </style>
+</head>
+<body>
+    <div id="main"></div>
+<script src="../plugins/jquery.min.js?v=2.1.4"></script>
+<script src="../plugins/bootstrap.min.js?v=3.3.6"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=ZUONbpqGBsYGXNIYHicvbAbM"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/library/Heatmap/2.0/src/Heatmap_min.js"></script>
+<script>
+    (function () {
+
+        var map = new BMap.Map("main");
+
+        map.centerAndZoom(new BMap.Point(120.1617445782, 30.2799186759), 8);
+        map.enableScrollWheelZoom(true);
+        var top_right_navigation = new BMap.NavigationControl({anchor: BMAP_ANCHOR_TOP_RIGHT, type: BMAP_NAVIGATION_CONTROL_SMALL});
+        map.addControl(top_right_navigation);
+         map.setMapStyle({style:'light'});
+        var provinces = ["杭州市-#f00", "绍兴市-#ff5500", "宁波市-#ffff00", "舟山市-#E7CCAF", "嘉兴市-#DBEDC7",
+            "温州市-#FEFCBF", "湖州市-#E7CCAF", "金华市-#C8C1E3", "台州市-#FBC5DC", "衢州市-#00ff00",
+            "丽水市-#A6C2DE"
+        ];
+        var dataArray=[] ;var flag=0;
+//逐个显示
+        function asyn(province){
+            var boundary = new BMap.Boundary();
+            var city=province.split("-")[0];
+            var def = $.Deferred();
+            boundary.get(city, function(rs){
+                for (var i = 0; i < rs.boundaries.length; i++) {
+                    var ply = new BMap.Polygon(rs.boundaries[i], {strokeWeight: 1, strokeOpacity:0.5,fillColor:province.split("-")[1],strokeColor: "#000000"});
+                    map.addOverlay(ply);
+                    var centerPoint=ply.getBounds().getCenter();
+                    if(city=="宁波市"||city=="舟山市"||city=="台州市"||city=='温州市'){
+                        for(var i=0;i<10;i++){
+                            var objPoint={};
+                            objPoint.count=Math.floor(Math.random()*100);
+                            objPoint.lng=centerPoint.lng+i*0.05*(Math.random()>0.5?1:-1);
+                            objPoint.lat=centerPoint.lat+i*0.01*(Math.random()>0.5?1:-1);
+                            dataArray.push(objPoint);
+                        }
+                    }else{
+                        for(var i=0;i<20;i++){
+                            var objPoint={};
+                            objPoint.count=Math.floor(Math.random()*20);
+                            objPoint.lng=centerPoint.lng+i*0.03*(Math.random()>0.5?1:-1);
+                            objPoint.lat=centerPoint.lat+i*0.01*(Math.random()>0.5?1:-1);
+                            dataArray.push(objPoint);
+                        }
+                    }
+                    flag++;
+                    def.resolve(flag,dataArray);
+                }
+            });
+            return def.promise();
+        }
+
+        for (var i = provinces.length - 1; i >= 0; i--) {
+            asyn(provinces[i])
+               .then(function(data1,data2){
+                if(data1==11){
+                    var heatmapOverlay = new BMapLib.HeatmapOverlay({"radius":20});
+                     map.addOverlay(heatmapOverlay);
+                     heatmapOverlay.setDataSet({data:data2,max:60});
+                 }
+            });
+       }
+    })();
+
+</script>
+</body>
+</html>
+

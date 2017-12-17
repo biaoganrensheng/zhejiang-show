@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta name="keywords" content="天地图"/>
+    <title>天地图</title>
+    <script type="text/javascript" src="http://api.tianditu.com/api?v=4.0"></script>
+    <script src="../plugins/jquery.min.js?v=2.1.4"></script>
+    <script type="text/javascript" src="tmap.js"></script>
+    <script type="text/javascript" src="data/coast.js"></script>
+    <link rel="stylesheet" href="tmap.css">
+</head>
+<body onLoad="onLoad()">
+    <div id="mapDiv"></div>
+    <span id="reMain">滩涂位置专项</span>
+    <div id="tuli">
+        <img src="images/camer.png" alt="">
+        <p>视频</p>
+        <img src="images/blue.png" alt="">
+        <p>正常</p>
+        <img src="images/green.png" alt="">
+        <p>轻度</p>
+        <img src="images/red.png" alt="">
+        <p>严重</p>
+        <img src="images/yellow.png" alt="">
+        <p>提醒</p>
+    </div>
+    <div id="subjectsBox">
+        <span id="downAndUp">
+            <img src="images/up.png">
+        </span>
+        <ul>
+            <li val='mudPos' class="active" id="mud">滩涂位置专项</li>
+            <li val='illbeach'>非法占用海滩专项</li>
+            <li val='illfix'>非法修、造、拆船舶监管专项</li>
+            <li val='illbreak'>非法占用、破坏海岸线专项</li>
+            <li val='illfisher'>违禁渔具专项</li>
+            <li val='illboat'>三无渔船专项</li>
+            <li val='illpest'>农药清潭行专项</li>
+        </ul>
+    </div>
+
+
+</body>
+<script>
+var map;
+var zoom = 11;
+function onLoad() {
+    //初始化地图对象
+    map = new T.Map("mapDiv");
+    //设置显示地图的中心点和级别
+    map.centerAndZoom(new T.LngLat(121.27044,28.17826), zoom);
+    // 缩放到一定层级时改换底图，现设置为12级改变是为了保证玉环影像好看
+    map.addEventListener('zoomend',function(){
+        if(map.getZoom()<=12){
+            map.setMapType(TMAP_NORMAL_MAP);
+            hideLabel();
+        }
+        else{
+            map.setMapType(TMAP_HYBRID_MAP);
+            if(!$('#mud').hasClass('active')){
+                hideLabel();
+            }
+            else{
+                showLabel();
+            }
+        }
+    });
+    //绘制玉环市范围
+    addCity('玉环市','#fff');
+
+    //每个专项添加点击事件
+    var arrayObj = [];
+    var markers = new T.MarkerClusterer(map,{markers: addMudMarker(exmPoint)});
+    hideLabel();
+    $('#subjectsBox ul li').click(function(){
+        $('#reMain').html($(this).html());
+        $('#subjectsBox ul li').removeClass('active');
+        $(this).addClass('active');
+        map.centerAndZoom(new T.LngLat(121.27044,28.17826),11);
+        $("#subjectsBox ul").slideToggle();
+        markers.clearMarkers(arrayObj);
+        map.closeInfoWindow();
+        if($(this).attr('val')=='mudPos'){
+            $('#tuli').show();
+            arrayObj = addMudMarker(exmPoint);
+            if(map.getZoom()<=12){
+                hideLabel();
+            }
+            else{
+                showLabel();
+            }
+        }
+        else{
+            $('#tuli').hide();
+            arrayObj = addMarker(illData,$(this).attr('val'));
+            hideLabel();
+        }
+        markers.addMarkers(arrayObj);
+    })
+    $('#downAndUp').click(function(){
+        $("#subjectsBox ul").slideToggle();
+    })
+}
+
+</script>
+</html>

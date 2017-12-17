@@ -1,0 +1,141 @@
+<div id="wp_3" ></div>
+<script>
+
+    require.config({
+        paths: {
+            echarts: './mapT/dist'
+        }
+    });
+    require(
+        [
+            'echarts',
+            'echarts/dark',
+            'echarts/chart/map',
+            'echarts/chart/line',
+            'echarts/chart/bar',
+            'echarts/chart/pie',
+            'echarts/chart/funnel'
+        ],
+        function (ec,theme) {
+            var option={
+                title : {
+                    text: '用药情况(2008年度)',
+                    x:'center',
+                    y:'18'
+                },
+                tooltip : {
+                    trigger: 'axis',
+                    axisPointer:{
+                        type: 'shadow',
+                        lineStyle: {
+                            color: '#48b',
+                            width: 2,
+                            type: 'solid'
+                        },
+                        crossStyle: {
+                            color: '#1e90ff',
+                            width: 1,
+                            type: 'dashed'
+                        },
+                        shadowStyle: {
+                            color: 'rgba(150,150,150,0.3)',
+                            width: 'auto',
+                            type: 'default'
+                        }
+                    },
+                    formatter:'{b}</br>{a}:{c}kg'
+                },
+                legend: {
+                    data:['用药量'],
+                    x:'80%',
+                    y:'4%'
+                },
+                grid:{
+                    x:'10%',
+                    y:'14%',
+                    x2:60,
+                    y2:36
+                },
+                toolbox: {
+                    show : false,
+                    feature : {
+                        mark : {show: true},
+                        dataView : {show: true, readOnly: false},
+                        magicType : {show: true, type: ['line', 'bar']},
+                        restore : {show: true},
+                        saveAsImage : {show: true}
+                    }
+                },
+                calculable : true,
+                xAxis : [
+                    {
+                        type : 'category',
+                        data : ['贝类','藻类','甲壳类','鱼类','其他品种']
+                    }
+                ],
+                yAxis : [
+                    {
+                        name:'kg',
+                        type : 'value',
+                        boundaryGap:[0,0.02]
+                    }
+                ],
+                series : [
+                    {
+                        name:'用药量',
+                        type:'bar',
+                        itemStyle:{
+                            normal: {
+                                color: function(params) {
+                                    var colorList = [
+                                        '#9BCA63','#FAD860','#F3A43B','#60C0DD',
+                                        '#26C0C0'
+                                    ];
+                                    return colorList[params.dataIndex]
+                                }
+                            }
+                        },
+                        data:[200, 490, 700, 23.2, 25.6],
+                        markPoint : {
+                            data : [
+                                {type : 'max', name: '最大值'},
+                                {type : 'min', name: '最小值'}
+                            ]
+                        },
+                        markLine : {
+                            data : [
+                                {type : 'average', name: '平均值'}
+                            ]
+                        }
+                    }
+                ]
+            };
+            var waterProductChart3=ec.init(document.getElementById("wp_3"),'macarons');
+            waterProductChart3.setOption(option);
+            window.onresize = waterProductChart3.resize;
+            //            模拟动态数据
+            var newData=function(item,min,max){
+                item=item||5,min=min||0,max=max||100;
+                var dataNEW=[];
+                for(var i=0;i<item;i++){
+                    dataNEW.push(Math.floor(Math.random()*(max-min+1)+min))
+                }
+                return dataNEW
+            };
+            var time=2008;
+            var timer_waterProductChart3=setInterval(function(){
+                option.title.text="用药情况("+(time<2017?++time:time=2008)+"年度)";
+                option.series[0].data=newData(5,100,1000);
+                waterProductChart3.setOption(option,true);
+            },1500);
+            $("#wp_3").hover(function () {
+                clearInterval(timer_waterProductChart3);
+            },function(){
+                timer_waterProductChart3=setInterval(function(){
+                    option.title.text="用药情况("+(time<2017?++time:time=2008)+"年度)";
+                    option.series[0].data=newData(5,100,1000);
+                    waterProductChart3.setOption(option,true);
+                },1500);
+            })
+        })
+</script>

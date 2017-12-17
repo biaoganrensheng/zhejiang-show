@@ -1,0 +1,134 @@
+<div id="wp_4" ></div>
+<script>
+
+    require.config({
+        paths: {
+            echarts: './mapT/dist'
+        }
+    });
+    require(
+        [
+            'echarts',
+            'echarts/dark',
+            'echarts/chart/map',
+            'echarts/chart/line',
+            'echarts/chart/bar',
+            'echarts/chart/pie',
+            'echarts/chart/funnel'
+        ],
+        function (ec,theme) {
+            var option={
+                title : {
+                    text: '养殖产量',
+                    x:'center',
+                    y:'18'
+                },
+                tooltip : {
+                    trigger: 'axis',
+                    axisPointer:{
+                        type: 'shadow',
+                        lineStyle: {
+                            color: '#48b',
+                            width: 2,
+                            type: 'solid'
+                        },
+                        crossStyle: {
+                            color: '#1e90ff',
+                            width: 1,
+                            type: 'dashed'
+                        },
+                        shadowStyle: {
+                            color: 'rgba(150,150,150,0.3)',
+                            width: 'auto',
+                            type: 'default'
+                        }
+                    },
+                    formatter:'{b}<br>{a}:{c}吨'
+                },
+                legend: {
+                    data:['2008年'],
+                    x:'80%',
+                    y:'4%'
+                },
+                grid:{
+                    x:'12%',
+                    y:'14%',
+                    x2:60,
+                    y2:46
+                },
+                toolbox: {
+                    show : false,
+                    feature : {
+                        mark : {show: true},
+                        dataView : {show: true, readOnly: true},
+                        magicType: {show: true, type: ['line', 'bar']},
+                        restore : {show: true},
+                        saveAsImage : {show: true}
+                    }
+                },
+                calculable : true,
+                xAxis : [
+                    {
+                        type : 'value',
+                        boundaryGap:[0,0.02],
+                        name:'吨'
+                    }
+                ],
+                yAxis : [
+                    {
+                        type : 'category',
+                        data : ['贝类','藻类','甲壳类','鱼类','其他','总量']
+                    }
+                ],
+                series : [
+                    {
+                        name:"2008年",
+                        itemStyle:{
+                            normal: {
+                                color: function(params) {
+                                    var colorList = [
+                                        '#C1232B','#B5C334','#C6E579','#F4E001','#F0805A','#26C0C0'
+                                    ];
+                                    return colorList[params.dataIndex]
+                                }
+                            }
+                        },
+                        type:'bar',
+                        data:[100, 344, 678, 890, 567, 980]
+                    }
+                ]
+            };
+            var waterProductChart4=ec.init(document.getElementById("wp_4"),'macarons');
+            waterProductChart4.setOption(option);
+            window.onresize = waterProductChart4.resize;
+            //            模拟动态数据
+            var newData=function(item,min,max,sort){
+                item=item||5,min=min||0,max=max||100;
+                var dataNEW=[];
+                for(var i=0;i<item;i++){
+                    dataNEW.push(Math.floor(Math.random()*(max-min+1)+min))
+                }
+                sort&&dataNEW.sort(function(a,b){
+                   return a-b;
+                });
+                return dataNEW
+            };
+            var time=2008;
+            var timer_waterProductChart4=setInterval(function(){
+                option.legend.data=[(time<2017?++time:time=2008)+"年"];
+                option.series[0].name=(time)+"年";
+                option.series[0].data=newData(6,100,1000,'sort');
+                waterProductChart4.setOption(option,true);
+            },1800);
+            $("#wp_4").hover(function () {
+                clearInterval(timer_waterProductChart4);
+            },function(){
+                timer_waterProductChart4=setInterval(function(){
+                    option.legend.data=[(time<2017?++time:time=2008)+"年"];
+                    option.series[0].name=(time)+"年";
+                    option.series[0].data=newData(6,100,1000,'sort');
+                    waterProductChart4.setOption(option,true);
+                },1800);
+            })
+        })
+</script>

@@ -1,0 +1,134 @@
+<div id="vl_6" ></div>
+<script>
+
+    require.config({
+        paths: {
+            echarts: './mapT/dist'
+        }
+    });
+    require(
+        [
+            'echarts',
+            'echarts/heliantus',
+            'echarts/chart/map',
+            'echarts/chart/line',
+            'echarts/chart/bar',
+            'echarts/chart/pie',
+            'echarts/chart/scatter',
+            'echarts/chart/funnel'
+        ],
+        function (ec,theme) {
+            var option={
+                title : {
+                    text: '渔船保险情况(2014年度)',
+                    x:'center'
+                },
+                tooltip : {
+                    trigger: 'axis',
+                    axisPointer : {
+                        type : 'shadow'
+                    },
+                    formatter:'{b}</br>{a}:{c}人</br>{a1}:{c1}人'
+                },
+                legend: {
+                    data:['在保','脱保'],
+                    x:'left'
+                },
+                toolbox: {
+                    show : false,
+                    feature : {
+                        mark : {show: true},
+                        dataView : {show: true, readOnly: true},
+                        magicType : {show: true, type: ['line', 'bar']},
+                        restore : {show: true},
+                        saveAsImage : {show: true}
+                    }
+                },
+                calculable : true,
+                xAxis : [
+                    {
+                        type : 'category',
+                        boundaryGap : false,
+                        data : ['杭州市','宁波市','玉环市','温州市','丽水市']
+                    }
+                ],
+                yAxis : [
+                    {
+                        type : 'value',
+                        name:'船数',
+                        boundaryGap:[0,0.02],
+                        axisLabel : {
+                            formatter: '{value}'
+                        }
+                    }
+                ],
+                series : [
+                    {
+                        name:'在保',
+                        type:'line',
+                        data:[110, 110, 150, 130, 120],
+                        markPoint : {
+                            data : [
+                                {type : 'max', name: '最大值'},
+                                {type : 'min', name: '最小值'}
+                            ]
+                        },
+                        markLine : {
+                            data : [
+                                {type : 'average', name: '平均值'}
+                            ]
+                        }
+                    },
+                    {
+                        name:'脱保',
+                        type:'line',
+                        data:[100,200,300,400,340],
+                        markPoint : {
+                            data : [
+                                {type : 'max', name: '最大值'},
+                                {type : 'min', name: '最小值'}
+                            ]
+                        },
+                        markLine : {
+                            data : [
+                                {type : 'average', name : '平均值'}
+                            ]
+                        }
+                    }
+                ]
+            };
+            var villagesChart6=ec.init(document.getElementById("vl_6"),theme);
+            villagesChart6.setOption(option);
+            window.onresize = villagesChart6.resize;
+            //            模拟动态数据
+            var newData=function(item,min,max){
+                item=item||5,min=min||0,max=max||100;
+                var dataNEW=[];
+                for(var i=0;i<item;i++){
+                    dataNEW.push(Math.floor(Math.random()*(max-min+1)+min))
+                }
+                return dataNEW
+            };
+            var time=2014;
+            var timer_villagesChart6=setInterval(function(){
+                var changeData=option.series;
+                option.title.text="作业区域招聘求职("+(time<2017?++time:time=2014)+"年度)";
+                for(var i=0;i<changeData.length;i++){
+                    changeData[i].data=newData(5,100,500);
+                }
+                villagesChart6.setOption(option,true);
+            },1600);
+            $("#vl_6").hover(function () {
+                clearInterval(timer_villagesChart6);
+            },function(){
+                timer_villagesChart6=setInterval(function(){
+                    var changeData=option.series;
+                    option.title.text="作业区域招聘求职("+(time<2017?++time:time=2014)+"年度)";
+                    for(var i=0;i<changeData.length;i++){
+                        changeData[i].data=newData(5,100,500);
+                    }
+                    villagesChart6.setOption(option,true);
+                },1600);
+            })
+        })
+</script>

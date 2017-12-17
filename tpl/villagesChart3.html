@@ -1,0 +1,171 @@
+<div id="vl_3" ></div>
+<script>
+
+    require.config({
+        paths: {
+            echarts: './mapT/dist'
+        }
+    });
+    require(
+        [
+            'echarts',
+            'echarts/heliantus',
+            'echarts/chart/map',
+            'echarts/chart/line',
+            'echarts/chart/bar',
+            'echarts/chart/pie',
+            'echarts/chart/scatter',
+            'echarts/chart/funnel'
+        ],
+        function (ec,theme) {
+            var option={
+                title : {
+                    text: '船员薪资分布(2014年度)',
+                    x:'center'
+                },
+                dataZoom:{
+                    show:true,
+                    height:'20'
+                },
+                tooltip : {
+                    trigger: 'axis',
+                    showDelay : 0,
+                    formatter : function (params) {
+                        if (params.value.length > 1) {
+                            return params.seriesName + ' :<br/>'
+                                + params.value[0] + '岁 '
+                                + params.value[1] + 'K ';
+                        }
+                        else {
+                            return params.seriesName + ' :<br/>'
+                                + params.name + ' : '
+                                + params.value + 'K ';
+                        }
+                    },
+                    axisPointer:{
+                        show: true,
+                        type : 'cross',
+                        lineStyle: {
+                            type : 'dashed',
+                            width : 1
+                        }
+                    }
+                },
+                legend: {
+                    data:['船员薪资'],
+                    x:'right',
+                    y:'6%'
+                },
+                toolbox: {
+                    show : false,
+                    feature : {
+                        mark : {show: true},
+                        dataZoom : {show: true},
+                        dataView : {show: true, readOnly: true},
+                        restore : {show: true},
+                        saveAsImage : {show: true}
+                    }
+                },
+                grid:{
+                    x:'12%',
+                    y:'20%',
+                    x2:40,
+                    y2:70
+                },
+                xAxis : [
+                    {
+                        type : 'value',
+                        scale:true,
+                        data:[20,30,40,50,60],
+                        axisLabel : {
+                            formatter: '{value} 岁'
+                        }
+                    }
+                ],
+                yAxis : [
+                    {
+                        type : 'value',
+                        scale:true,
+                        name:'月薪',
+                        axisLabel : {
+                            formatter: '{value} K'
+                        },
+                        boundaryGap:[0,0.02]
+                    }
+                ],
+                series : [
+                    {
+                        name:'船员薪资',
+                        type:'scatter',
+                        data: randomDataArray(),
+                        symbolSize: function (value){
+                            return Math.round(value[1]/2);
+                        },
+                        markPoint : {
+                            data : [
+                                {type : 'max', name: '最大值'},
+                                {type : 'min', name: '最小值'}
+                            ]
+                        },
+                        markLine : {
+                            data : [
+                                {type : 'average', name: '平均值'}
+                            ]
+                        }
+                    }
+
+                ]
+            };
+            var villagesChart3=ec.init(document.getElementById("vl_3"),theme);
+            function randomAge(){
+                var age = Math.round(Math.random()*42+18);
+                return age;
+            }
+            function randomSalary(age){
+                var salary;
+                if(age>40&&age<50){
+                    salary = Math.round(Math.random()*20+10);
+                }else{
+                    salary = Math.round(Math.random()*5+10);
+                }
+                return salary;
+            }
+
+            function randomDataArray() {
+                var d = [];
+                var len = 100;
+                while (len--) {
+                    var age=randomAge();
+                    d.push([
+                        age,
+                        randomSalary(age)
+                    ]);
+                }
+                return d;
+            }
+            villagesChart3.setOption(option);
+            window.onresize = villagesChart3.resize;
+            //            模拟动态数据
+            var time=2014;
+            var timer_villagesChart3=setInterval(function(){
+                var changeData=option.series;
+                option.title.text="作业区域招聘求职("+(time<2017?++time:time=2014)+"年度)";
+                for(var i=0;i<changeData.length;i++){
+                    changeData[i].data=randomDataArray();
+                }
+                villagesChart3.setOption(option,true);
+            },1600);
+            $("#vl_3").hover(function () {
+                clearInterval(timer_villagesChart3);
+            },function(){
+                timer_villagesChart3=setInterval(function(){
+                    var changeData=option.series;
+                    option.title.text="作业区域招聘求职("+(time<2017?++time:time=2014)+"年度)";
+                    for(var i=0;i<changeData.length;i++){
+                        changeData[i].data=randomDataArray();
+                    }
+                    villagesChart3.setOption(option,true);
+                },1600);
+            })
+        })
+</script>

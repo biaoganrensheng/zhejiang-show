@@ -1,0 +1,163 @@
+<div id="wp_2" ></div>
+<script>
+
+    require.config({
+        paths: {
+            echarts: './mapT/dist'
+        }
+    });
+    require(
+        [
+            'echarts',
+            'echarts/dark',
+            'echarts/chart/map',
+            'echarts/chart/line',
+            'echarts/chart/bar',
+            'echarts/chart/pie',
+            'echarts/chart/funnel'
+        ],
+        function (ec,theme) {
+            var option={
+                title : {
+                    text: '病起用药(2008年度)',
+                    x:'center',
+                    y:'20'
+                },
+                tooltip : {
+                    trigger: 'axis',
+                    axisPointer:{
+                        type: 'shadow',
+                        lineStyle: {
+                            color: '#48b',
+                            width: 2,
+                            type: 'solid'
+                        },
+                        crossStyle: {
+                            color: '#1e90ff',
+                            width: 1,
+                            type: 'dashed'
+                        },
+                        shadowStyle: {
+                            color: 'rgba(150,150,150,0.3)',
+                            width: 'auto',
+                            type: 'default'
+                        }
+                    },
+                    formatter:'{b}</br>{a}:{c}人</br>{a1}:{c1}'
+                },
+                legend: {
+                    data:['病起','用药'],
+                    x:'right',
+                    y:'top'
+                },
+                toolbox: {
+                    show : false,
+                    feature : {
+                        mark : {show: true},
+                        dataView : {show: true, readOnly: true},
+                        magicType : {show: true, type: ['line', 'bar']},
+                        restore : {show: true},
+                        saveAsImage : {show: true}
+                    }
+                },
+                grid:{
+                    x:60,
+                    y:'18%',
+                    x2:44,
+                    y2:60
+                },
+                calculable : true,
+                xAxis : [
+                    {
+                        type : 'category',
+                        boundaryGap : false,
+                        data : ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月']
+                    }
+                ],
+                yAxis : [
+                    {
+                        type : 'value',
+                        name:'用药起数(起)',
+                        boundaryGap:[0,0.02],
+                        axisLabel : {
+                            formatter: '{value}'
+                        }
+                    },
+                    {
+                        type : 'value',
+                        position:'right',
+                        show:true,
+                        boundaryGap:[0,0.02],
+                        name:'用药量数(千克)',
+                        axisLabel : {
+                            formatter: '{value}'
+                        }
+                    }
+                ],
+                series : [
+                    {
+                        name:'病起',
+                        type:'line',
+                        data:[110, 110, 150, 130, 120, 130, 100,300,450,67,90,34],
+                        markPoint : {
+                            data : [
+                                {type : 'max', name: '最大值'},
+                                {type : 'min', name: '最小值'}
+                            ]
+                        },
+                        markLine : {
+                            data : [
+                                {type : 'average', name: '平均值'}
+                            ]
+                        }
+                    },
+                    {
+                        name:'用药',
+                        type:'line',
+                        data:[200,400,600,450,620,563,890,780,880,896,500,165],
+                        yAxisIndex: 1,
+                        markPoint : {
+                            data : [
+                                {type : 'max', name: '最大值'},
+                                {type : 'min', name: '最小值'}
+                            ]
+                        },
+                        markLine : {
+                            data : [
+                                {type : 'average', name : '平均值'}
+                            ]
+                        }
+                    }
+                ]
+            };
+            var waterProductChart2=ec.init(document.getElementById("wp_2"),'macarons');
+            waterProductChart2.setOption(option);
+            window.onresize = waterProductChart2.resize;
+//            模拟动态数据
+            var newData=function(item,min,max){
+                item=item||5,min=min||0,max=max||100;
+                var dataNEW=[];
+                for(var i=0;i<item;i++){
+                    dataNEW.push(Math.floor(Math.random()*(max-min+1)+min))
+                }
+                return dataNEW
+            };
+            var time=2008;
+            var timer_waterProductChart2=setInterval(function(){
+                option.title.text="病起用药("+(time<2017?++time:time=2008)+"年度)";
+                option.series[0].data=newData(12,100,300);
+                option.series[1].data=newData(12,100,1000);
+                waterProductChart2.setOption(option,true);
+            },2500);
+            $("#wp_2").hover(function () {
+                clearInterval(timer_waterProductChart2);
+            },function(){
+                timer_waterProductChart2=setInterval(function(){
+                    option.title.text="病起用药("+(time<2017?++time:time=2008)+"年度)";
+                    option.series[0].data=newData(12,100,300);
+                    option.series[1].data=newData(12,100,1000);
+                    waterProductChart2.setOption(option,true);
+                },2500);
+            })
+        })
+</script>

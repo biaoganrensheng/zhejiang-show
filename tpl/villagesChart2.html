@@ -1,0 +1,174 @@
+<div id="vl_2" ></div>
+<script>
+
+    require.config({
+        paths: {
+            echarts: './mapT/dist'
+        }
+    });
+    require(
+        [
+            'echarts',
+            'echarts/heliantus',
+            'echarts/chart/map',
+            'echarts/chart/line',
+            'echarts/chart/bar',
+            'echarts/chart/pie',
+            'echarts/chart/scatter',
+            'echarts/chart/funnel'
+        ],
+        function (ec,theme) {
+            var option={
+                title:{
+                    text: '渔船出海情况(2008年度)',
+                    x:'center'
+                },
+                tooltip : {
+                    trigger: 'axis',
+                    axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+                        type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                    }
+                },
+                legend: {
+                    x:'center',
+                    y:'bottom',
+                    data:['刺网','围网','拖网','拖虾','张网','钓具','','耙刺','陷阱','笼壶','杂渔具','其他'],
+                    selected: {
+                        '刺网' : false,
+                        '围网' : false,
+                        '拖网' : false,
+                        '张网' : false,
+                        '钓具' : false,
+                        '陷阱' : false,
+                        '其他' : false,
+                        '耙刺' : false
+                    }
+                },
+                toolbox: {
+                    show : false,
+                    orient: 'vertical',
+                    x:'right',
+                    y:'center',
+                    feature : {
+                        mark : {show: true},
+                        dataView : {show: true, readOnly: false},
+                        magicType : {show: true, type: ['line', 'bar', 'stack', 'tiled']},
+                        restore : {show: true},
+                        saveAsImage : {show: true}
+                    }
+                },
+                grid:{
+                    x:'14%',
+                    y:'10%',
+                    x2:40,
+                    y2:80
+                },
+                calculable : true,
+                xAxis : [
+                    {
+                        type : 'category',
+                        boundaryGap : false,
+                        data : ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月']
+                    }
+                ],
+                yAxis : [
+                    {
+                        type : 'value',
+                        name:'艘',
+                        boundaryGap:[0,0.02]
+                    }
+                ],
+                series : [
+                    {
+                        name:'刺网',
+                        type:'bar',
+                        data:[120,132,101,134,90,230,210,56,78,90,66,78]
+                    },
+                    {
+                        name:'围网',
+                        type:'bar',
+                        data:[120,156,200,145,100,230,345,256,178,90,66,78]
+                    },
+                    {
+                        name:'拖网',
+                        type:'bar',
+                        data:[200,234,269,340,543,450,567,234,321,210,166,78]
+                    },
+                    {
+                        name:'拖虾',
+                        type:'bar',
+                        data:[120,233,456,233,234,256,278,145,132,129,165,178]
+                    },
+                    {
+                        name:'张网',
+                        type:'bar',
+                        data:[230,132,222,134,333,230,233,56,455,90,66,455]
+                    },
+                    {
+                        name:'钓具',
+                        type:'bar',
+                        data:[120,223,101,344,90,230,333,56,78,222,66,78]
+                    },
+                    {
+                        name:'耙刺',
+                        type:'bar',
+                        data:[120,233,101,134,34,230,210,56,78,90,666,78]
+                    },
+                    {
+                        name:'陷阱',
+                        type:'bar',
+                        data:[222,132,333,134,455,230,566,56,78,788,66,88]
+                    },
+                    {
+                        name:'笼壶',
+                        type:'bar',
+                        data:[120,132,344,134,455,230,210,566,78,90,677,78]
+                    },
+                    {
+                        name:'杂渔具',
+                        type:'bar',
+                        data:[120,566,101,333,90,230,210,56,78,90,233,718]
+                    },
+                    {
+                        name:'其他',
+                        type:'bar',
+                        data:[120,222,101,134,120,230,444,56,78,344,66,146]
+                    }
+                ]
+            };
+            var villagesChart2=ec.init(document.getElementById("vl_2"),theme);
+            villagesChart2.setOption(option);
+            window.onresize = villagesChart2.resize;
+            //            模拟动态数据
+            var newData=function(item,min,max){
+                item=item||5,min=min||0,max=max||100;
+                var dataNEW=[];
+                for(var i=0;i<item;i++){
+                    dataNEW.push(Math.floor(Math.random()*(max-min+1)+min))
+                }
+                return dataNEW
+            };
+
+            var time=2008;
+            var timer_villagesChart2=setInterval(function(){
+                var changeData=option.series;
+                option.title.text="渔船出海情况("+(time<2017?++time:time=2008)+"年度)";
+                for(var i=0;i<changeData.length;i++){
+                    changeData[i].data=newData(12,100,1000);
+                }
+                villagesChart2.setOption(option,true);
+            },1600);
+            $("#vl_2").hover(function () {
+                clearInterval(timer_villagesChart2);
+            },function(){
+                timer_villagesChart2=setInterval(function(){
+                    var changeData=option.series;
+                    option.title.text="渔船出海情况("+(time<2017?++time:time=2008)+"年度)";
+                    for(var i=0;i<changeData.length;i++){
+                        changeData[i].data=newData(12,100,1000);
+                    }
+                    villagesChart2.setOption(option,true);
+                },1600);
+            })
+        })
+</script>
